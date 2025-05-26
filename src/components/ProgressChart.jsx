@@ -3,7 +3,7 @@ import {
   CartesianGrid, ResponsiveContainer
 } from "recharts";
 
-export default function ProgressChart({ trendData, actualData }) {
+export default function ProgressChart({ trendData }) {
   return (
     <div className="p-4 bg-white shadow rounded-xl mt-6">
       <h2 className="text-lg font-semibold mb-4">Progress Chart</h2>
@@ -32,8 +32,7 @@ export default function ProgressChart({ trendData, actualData }) {
 
           <Line
             type="monotone"
-            data={actualData}
-            dataKey="weight"
+            dataKey="actualWeight"
             stroke="#EF4444"
             dot={{ r: 4 }}
             name="Actual Weight"
