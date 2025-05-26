@@ -1,4 +1,7 @@
-import { AreaChart, Area, Line, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer } from "recharts";
+import {
+  AreaChart, Area, Line, XAxis, YAxis, Tooltip,
+  CartesianGrid, ResponsiveContainer
+} from "recharts";
 
 export default function ProgressChart({ trendData, actualData }) {
   return (
@@ -29,7 +32,8 @@ export default function ProgressChart({ trendData, actualData }) {
 
           <Line
             type="monotone"
-            dataKey="actualWeight"
+            data={actualData}
+            dataKey="weight"
             stroke="#EF4444"
             dot={{ r: 4 }}
             name="Actual Weight"
