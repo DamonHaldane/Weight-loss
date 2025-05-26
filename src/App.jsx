@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import GoalForm from "./components/GoalForm";
 import ProgressChart from "./components/ProgressChart";
+import WeightLogForm from "./components/WeightLogForm";
 
 function App() {
   const [goal, setGoal] = useState(null);
@@ -9,6 +10,10 @@ function App() {
 
   const handleGoalSubmit = (goalData) => {
     setGoal(goalData);
+  };
+
+  const addEntry = (entry) => {
+    setActualData(prev => [...prev, entry]);
   };
 
   const generateTrendData = () => {
@@ -24,10 +29,12 @@ function App() {
       date.setDate(start.getDate() + i);
       const progress = i / days;
       const targetWeightAtDate = (startWeight - progress * (startWeight - targetWeight)).toFixed(1);
-      const actual = actualData.find(entry => new Date(entry.date).toDateString() === date.toDateString());
+      const dateString = date.toISOString().split('T')[0];
+
+      const actual = actualData.find(entry => entry.date === dateString);
 
       trendData.push({
-        date: date.toISOString().split('T')[0],
+        date: dateString,
         targetWeight: parseFloat(targetWeightAtDate),
         actualWeight: actual ? actual.weight : null,
       });
@@ -46,10 +53,13 @@ function App() {
               <>
                 <GoalForm onGoalSubmit={handleGoalSubmit} />
                 {goal && (
-                  <ProgressChart
-                    trendData={generateTrendData()}
-                    actualData={actualData}
-                  />
+                  <>
+                    <WeightLogForm onAdd={addEntry} />
+                    <ProgressChart
+                      trendData={generateTrendData()}
+                      actualData={actualData}
+                    />
+                  </>
                 )}
               </>
             }
