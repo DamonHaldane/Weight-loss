@@ -3,7 +3,7 @@ import {
   CartesianGrid, ResponsiveContainer
 } from "recharts";
 
-export default function ProgressChart({ trendData }) {
+export default function ProgressChart({ trendData, actualData }) {
   return (
     <div className="p-4 bg-white shadow rounded-xl mt-6">
       <h2 className="text-lg font-semibold mb-4">Progress Chart</h2>
@@ -21,6 +21,7 @@ export default function ProgressChart({ trendData }) {
           <YAxis domain={['auto', 'auto']} />
           <Tooltip />
 
+          {/* Target Area (Goal Line) */}
           <Area
             type="monotone"
             dataKey="targetWeight"
@@ -30,9 +31,11 @@ export default function ProgressChart({ trendData }) {
             name="Target Trend"
           />
 
+          {/* Actual Weight Line (Separate Dataset) */}
           <Line
+            data={actualData}
             type="monotone"
-            dataKey="actualWeight"
+            dataKey="weight"
             stroke="#EF4444"
             dot={{ r: 4 }}
             name="Actual Weight"
