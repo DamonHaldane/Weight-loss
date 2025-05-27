@@ -55,16 +55,11 @@ function App() {
   return (
     <Router>
       <div className="p-4 max-w-4xl mx-auto">
-        <h1 className="text-2xl font-bold mb-6">Weight Loss Tracker (Debug Mode)</h1>
-
+        <h1 className="text-2xl font-bold mb-6">Weight Loss Tracker</h1>
         <GoalForm onGoalSubmit={handleGoalSubmit} />
         <WeightLogForm onAdd={addEntry} />
         <WeightHistory entries={actualData} onDelete={deleteEntry} />
         <ProgressChart trendData={generateTrendData()} />
-
-        <pre className="mt-4 text-sm bg-gray-100 p-2 rounded">
-{JSON.stringify({ goal, actualData, trendData: generateTrendData() }, null, 2)}
-        </pre>
       </div>
     </Router>
   );
