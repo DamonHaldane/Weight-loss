@@ -59,7 +59,10 @@ function App() {
         <GoalForm onGoalSubmit={handleGoalSubmit} />
         <WeightLogForm onAdd={addEntry} />
         <WeightHistory entries={actualData} onDelete={deleteEntry} />
-        <ProgressChart trendData={generateTrendData()} />
+        <ProgressChart
+  trendData={generateTrendData()}
+  actualData={actualData}
+/>
       </div>
     </Router>
   );
