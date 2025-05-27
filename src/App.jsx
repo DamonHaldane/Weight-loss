@@ -6,11 +6,20 @@ import WeightLogForm from "./components/WeightLogForm";
 import WeightHistory from "./components/WeightHistory";
 
 function App() {
-  const [goal, setGoal] = useState(null);
+  const [goal, setGoal] = useState({
+    startDate: "2025-05-01",
+    goalDate: "2025-08-01",
+    startWeight: 95,
+    targetWeight: 80
+  });
   const [actualData, setActualData] = useState([]);
 
   const handleGoalSubmit = (goalData) => {
     setGoal(goalData);
+  };
+
+  const addEntry = (entry) => {
+    setActualData(prev => [...prev, entry]);
   };
 
   const deleteEntry = (index) => {
@@ -30,10 +39,12 @@ function App() {
       date.setDate(start.getDate() + i);
       const progress = i / days;
       const targetWeightAtDate = (startWeight - progress * (startWeight - targetWeight)).toFixed(1);
-      const actual = actualData.find(entry => new Date(entry.date).toDateString() === date.toDateString());
+      const dateString = date.toISOString().split('T')[0];
+
+      const actual = actualData.find(entry => entry.date === dateString);
 
       trendData.push({
-        date: date.toISOString().split('T')[0],
+        date: dateString,
         targetWeight: parseFloat(targetWeightAtDate),
         actualWeight: actual ? actual.weight : null,
       });
@@ -44,23 +55,16 @@ function App() {
   return (
     <Router>
       <div className="p-4 max-w-4xl mx-auto">
-        <h1 className="text-2xl font-bold mb-6">Weight Loss Tracker</h1>
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <>
-                <GoalForm onGoalSubmit={handleGoalSubmit} />
-                {goal && (
-                  <ProgressChart
-                    trendData={generateTrendData()}
-                    actualData={actualData}
-                  />
-                )}
-              </>
-            }
-          />
-        </Routes>
+        <h1 className="text-2xl font-bold mb-6">Weight Loss Tracker (Debug Mode)</h1>
+
+        <GoalForm onGoalSubmit={handleGoalSubmit} />
+        <WeightLogForm onAdd={addEntry} />
+        <WeightHistory entries={actualData} onDelete={deleteEntry} />
+        <ProgressChart trendData={generateTrendData()} />
+
+        <pre className="mt-4 text-sm bg-gray-100 p-2 rounded">
+{JSON.stringify({ goal, actualData, trendData: generateTrendData() }, null, 2)}
+        </pre>
       </div>
     </Router>
   );
